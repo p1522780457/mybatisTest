@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- namespace：命名空间，用于隔离sql，还有一个很重要的作用，后面会讲 -->
+<mapper namespace="test">
+
+	<select id="queryUserById" parameterType="int"
+		resultType="com.pangw.mybatistest.User">
+		SELECT * FROM user WHERE id = #{id}
+	</select>
+
+	<select id="queryUserByUsername1" parameterType="string"
+		resultType="com.pangw.mybatistest.User">
+		select * from user where username like #{username}
+	</select>
+
+	<select id="queryUserByUsername2" parameterType="string"
+		resultType="com.pangw.mybatistest.User">
+		select * from user where username like '%${value}%'
+	</select>
+
+	<insert id="saveUser" parameterType="com.pangw.mybatistest.User">
+		insert into user
+		(username,birthday,sex,address) values
+		(#{username},#{birthday},#{sex},#{address})
+	</insert>
+
+	<insert id="saveUser2" parameterType="com.pangw.mybatistest.User">
+		<selectKey keyColumn="id" keyProperty="id" order="AFTER"
+			resultType="int">
+			select last_insert_id()
+		</selectKey>
+		insert into user (username,birthday,sex,address) values
+		(#{username},#{birthday},#{sex},#{address})
+	</insert>
+
+	<insert id="saveUser3" parameterType="com.pangw.mybatistest.User">
+		<selectKey keyColumn="id" keyProperty="id" order="BEFORE"
+			resultType="string">
+			select last_insert_id()
+		</selectKey>
+		insert into user (username,birthday,sex,address) values
+		(#{username},#{birthday},#{sex},#{address})
+	</insert>
+
+	<update id="updateUserById" parameterType="com.pangw.mybatistest.User">
+		update user set username = #{username} where id = #{id}
+	</update>
+
+	<delete id="deleteUserById" parameterType="int">
+		delete from user where id = #{id}
+	</delete>
+
+</mapper>
